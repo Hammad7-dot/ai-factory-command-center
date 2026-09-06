@@ -1,0 +1,23 @@
+artifact_path: file:C:/Users/dell/OneDrive/Documents/ChatGPT/AI Factory Command Center/mlruns/1/models/m-4f8398c7f48741ff9a59d51d3bdb2827/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.13.5
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+    skops_trusted_types: null
+mlflow_version: 3.16.0
+model_id: m-4f8398c7f48741ff9a59d51d3bdb2827
+model_size_bytes: 1926
+model_uuid: m-4f8398c7f48741ff9a59d51d3bdb2827
+prompts: null
+run_id: 2829203415574428aa2b274428d135ff
+utc_time_created: '2026-09-05 16:21:39.124971'

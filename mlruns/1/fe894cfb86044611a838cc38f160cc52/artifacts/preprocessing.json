@@ -1,0 +1,15 @@
+{
+  "audit": {
+    "input_rows": 4340,
+    "clean_rows": 4320,
+    "removed_rows": 20,
+    "invalid_sensor_values": 12,
+    "remaining_missing_features": 0
+  },
+  "split_rows": {
+    "train": 2556,
+    "validation": 828,
+    "test": 864
+  },
+  "purge_hours": 6
+}

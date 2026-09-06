@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860" role="img" aria-label="AI Factory system architecture">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#99bdce"/></marker><style>text{font-family:Arial,sans-serif;fill:#edf4f6;text-anchor:middle}.title{font-size:32px;font-weight:bold;fill:#c8f16b}.label{font-size:21px;font-weight:bold}.small{font-size:16px;fill:#bad0da}rect{fill:#152733;stroke:#416171;stroke-width:2}.line{fill:none;stroke:#99bdce;stroke-width:2;marker-end:url(#arrow)}</style></defs>
+<rect width="1400" height="860" style="fill:#0c141c;stroke:none"/>
+<text class="title" x="700" y="55">AI Factory Command Center</text>
+<text class="small" x="700" y="88">Synthetic manufacturing intelligence • Predictive models + evidence + human authority</text>
+<rect x="70" y="125" width="1260" height="75" rx="8"/>
+<text class="label" x="700" y="156">Inputs → cleaning, validation, joins and rolling features</text>
+<text class="small" x="700" y="183">Sensor history • Production records • Product images • Maintenance notes • PDF / text manuals</text>
+<path class="line" d="M285 200V244"/><path class="line" d="M700 200V244"/><path class="line" d="M1115 200V244"/>
+<rect x="70" y="250" width="400" height="108" rx="8"/><text class="label" x="270" y="283">Maintenance agent</text><text class="small" x="270" y="312">Random Forest / ANN + note extraction</text><text class="small" x="270" y="338">Probability + feature sensitivity</text>
+<rect x="500" y="250" width="400" height="108" rx="8"/><text class="label" x="700" y="283">Vision agent</text><text class="small" x="700" y="312">CNN defect classification</text><text class="small" x="700" y="338">Confidence + Grad-CAM</text>
+<rect x="930" y="250" width="400" height="108" rx="8"/><text class="label" x="1130" y="283">Knowledge agent</text><text class="small" x="1130" y="312">TF-IDF retrieval + cited sections</text><text class="small" x="1130" y="338">Optional hosted or local LLM</text>
+<path class="line" d="M270 358V385H700V408"/><path class="line" d="M700 358V408"/><path class="line" d="M1130 358V385H700V408"/>
+<rect x="350" y="415" width="700" height="90" rx="8"/><text class="label" x="700" y="449">Planning agent + simplified digital twin</text><text class="small" x="700" y="480">Continue • Reduce load • Maintenance → expected units, downtime and cost</text>
+<path class="line" d="M700 505V540"/>
+<rect x="350" y="547" width="700" height="80" rx="8"/><text class="label" x="700" y="579">Human supervisor: approve / reject / modify</text><text class="small" x="700" y="609">Append decision and incident snapshot → PDF / JSON report</text>
+<path class="line" d="M700 627V663"/>
+<rect x="70" y="670" width="1260" height="115" rx="8"/><text class="label" x="700" y="704">Controlled learning: confirmed outcomes → candidate training → evaluation → MLflow</text><text class="small" x="700" y="737">New, no-intervention outcomes only • Chronological splits • Six-hour purges • Minimum quality gate</text><text class="small" x="700" y="764">Registered candidate for review; active model is never replaced automatically</text>
+<text class="small" x="700" y="828">No machinery control. Included data and simulation economics are educational assumptions.</text>
+</svg>

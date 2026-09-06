@@ -1,0 +1,26 @@
+[
+  {
+    "observation": 5,
+    "image": "normal",
+    "failure_probability": 0.0,
+    "human_status": "approved",
+    "report_verified": true,
+    "source": "Synthetic rehearsal only"
+  },
+  {
+    "observation": 610,
+    "image": "defect",
+    "failure_probability": 0.872307987615025,
+    "human_status": "rejected",
+    "report_verified": true,
+    "source": "Synthetic rehearsal only"
+  },
+  {
+    "observation": 610,
+    "image": "defect",
+    "failure_probability": 0.8723079876150251,
+    "human_status": "modified",
+    "report_verified": true,
+    "source": "Synthetic rehearsal only"
+  }
+]

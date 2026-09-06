@@ -1,0 +1,12 @@
+SYNTHETIC TRAINING MANUAL — not an industrial procedure.
+Section 1: Vibration and bearing wear
+Persistent vibration accompanied by rising temperature may indicate bearing wear. Ask the supervisor to inspect the bearing and lubrication history. Compare multiple sensor samples before recommending maintenance. Only qualified personnel may perform maintenance.
+
+Section 2: Surface quality
+Scratches and pits on bearing surfaces require supervisor review and segregation of the affected lot for inspection. Investigate whether quality loss coincides with vibration changes. The image classifier is trained on synthetic surfaces only.
+
+Section 3: Safe maintenance
+Before maintenance, a qualified supervisor must authorize a stop and apply the site's verified isolation and lockout procedure. This synthetic manual is not a substitute for the actual machine manual. Never execute a stop solely on an AI prediction.
+
+Section 4: Reduced load
+A temporary reduction in machine load may lower stress while an inspection is arranged. The digital twin assumes 70 percent throughput and a hypothetical risk multiplier of 0.55; these assumptions require real-world validation.

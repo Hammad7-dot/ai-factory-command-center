@@ -1,0 +1,46 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "real_inference": true,
+  "question": "What reduced-load throughput percentage and risk multiplier does the supplied manual specify? If the manual is absent, say that these values are unavailable. Do not guess.",
+  "incident_explanation": {
+    "mode": "local_llm",
+    "available": true,
+    "text": "The recommended action is to maintain the bearing based on the provided evidence. The evidence suggests that:\n\n1. Persistent vibration accompanied by rising temperature may indicate bearing wear.\n2. The supervisor should inspect the bearing and lubrication history.\n3. Comparison of multiple sensor samples before recommending maintenance.\n\nThese findings suggest that the bearing's condition needs immediate attention due to potential bearing wear and reduced load conditions. Therefore, the supervisor should recommend maintenance immediately.",
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "limitations": "Small local model; verify all generated claims against retrieved evidence. Not validated on factory data."
+  },
+  "without_retrieval": {
+    "mode": "local_llm",
+    "available": true,
+    "text": "The manual specifies a reduced-load throughput percentage of 5% and a risk multiplier of 1.4 for the simulated educational factory. These values are unavailable due to the absence of such information in the provided text.",
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "limitations": "Small local model; verify all generated claims against retrieved evidence. Not validated on factory data."
+  },
+  "with_retrieval": {
+    "mode": "local_llm",
+    "available": true,
+    "text": "The manual specifies a reduced-load throughput percentage of 70% and a risk multiplier of 0.55 for the simulated system.",
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "limitations": "Small local model; verify all generated claims against retrieved evidence. Not validated on factory data."
+  },
+  "retrieved_sections": [
+    {
+      "source": "bearing_sop.txt",
+      "text": "Section 4: Reduced load\nA temporary reduction in machine load may lower stress while an inspection is arranged. The digital twin assumes 70 percent throughput and a hypothetical risk multiplier of 0.55; these assumptions require real-world validation.",
+      "score": 0.50568
+    },
+    {
+      "source": "operations_policy.txt",
+      "text": "Section 2: Simulation assumptions\nThe planning horizon is eight hours. Base throughput is 120 units per hour. A failure incurs four hours of downtime and 2400 currency units of repair cost. Planned maintenance takes two hours and costs 450 currency units, with a hypothetical failure-risk multiplier of 0.15. Each lost unit costs 4 currency units. Six-hour model probability converts to the eight-hour horizon under a constant-hazard assumption. The observed production reject rate supplies quality losses and stays unchanged across actions. A single image classification probability is not a batch reject rate. These are illustrative assumptions, not measured costs.",
+      "score": 0.09828
+    }
+  ],
+  "elapsed_seconds": 50.47,
+  "evaluation_note": "One demonstration case, not a general LLM accuracy evaluation. Human review required.",
+  "manual_review": {
+    "with_retrieval": "Correct: 70% throughput and 0.55 risk multiplier match bearing_sop.txt Section 4.",
+    "without_retrieval": "Incorrect: invented 5% and 1.4, then contradicted itself by saying the values are unavailable.",
+    "incident_explanation": "Relevant maintenance guidance, but overstates urgency and omits inline source filenames; retain supervisor review and display retrieved evidence separately.",
+    "scope": "One observed case; no claim of general reliability or hallucination prevention."
+  }
+}

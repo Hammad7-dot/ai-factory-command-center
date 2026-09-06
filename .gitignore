@@ -1,0 +1,11 @@
+.deps/
+local_models/
+__pycache__/
+.pytest_cache/
+.env
+*.log
+work/
+artifacts/decisions.sqlite
+artifacts/decisions.sqlite-*
+outputs/*.zip
+tools/browser_check.cjs

@@ -1,0 +1,9 @@
+SYNTHETIC OPERATIONS POLICY
+Section 1: Decision authority
+Every AI recommendation remains pending until a human supervisor approves, rejects or modifies it. Save the supervisor decision and reason with the incident evidence.
+
+Section 2: Simulation assumptions
+The planning horizon is eight hours. Base throughput is 120 units per hour. A failure incurs four hours of downtime and 2400 currency units of repair cost. Planned maintenance takes two hours and costs 450 currency units, with a hypothetical failure-risk multiplier of 0.15. Each lost unit costs 4 currency units. Six-hour model probability converts to the eight-hour horizon under a constant-hazard assumption. The observed production reject rate supplies quality losses and stays unchanged across actions. A single image classification probability is not a batch reject rate. These are illustrative assumptions, not measured costs.
+
+Section 3: Missing evidence
+If a manual does not support a proposed procedure, state that evidence is missing. Request qualified review. A high model probability is not proof of a failure.

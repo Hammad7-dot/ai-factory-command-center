@@ -1,0 +1,4 @@
+-r requirements-tested.txt
+transformers>=4.37
+huggingface_hub
+safetensors

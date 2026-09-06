@@ -1,0 +1,1 @@
+"""Synthetic manufacturing intelligence demo."""

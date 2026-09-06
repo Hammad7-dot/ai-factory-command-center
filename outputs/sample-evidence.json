@@ -1,0 +1,444 @@
+{
+  "incident_id": "ea63a201-3a83-46ce-9377-ad75105219cf",
+  "timestamp": "2026-09-06T10:21:36.960113+00:00",
+  "status": "pending",
+  "maintenance": {
+    "machine_id": "M-01",
+    "observation_timestamp": "2026-01-26 10:00:00+00:00",
+    "probability": 0.872307987615025,
+    "model": "random_forest",
+    "model_version": "1",
+    "horizon": "next 6 hours",
+    "explanation_method": "One-feature replacement with training median (local sensitivity; not causal)",
+    "features": [
+      {
+        "feature": "temperature_mean_6",
+        "value": 82.09719693041559,
+        "reference": 70.37056473329534,
+        "probability_delta": 0.33993592660688665
+      },
+      {
+        "feature": "vibration_mean_6",
+        "value": 4.8767793093697955,
+        "reference": 3.3505524014327848,
+        "probability_delta": 0.29021746589348896
+      },
+      {
+        "feature": "temperature",
+        "value": 85.39010207051119,
+        "reference": 70.50473277051994,
+        "probability_delta": 0.1961197352095314
+      },
+      {
+        "feature": "vibration",
+        "value": 5.928663181106897,
+        "reference": 3.3599528141544908,
+        "probability_delta": 0.16711965904434745
+      },
+      {
+        "feature": "pressure",
+        "value": 5.537173555186361,
+        "reference": 5.9392707487470435,
+        "probability_delta": 0.07199762775022467
+      },
+      {
+        "feature": "reject_rate",
+        "value": 0.11666666666666667,
+        "reference": 0.058333333333333334,
+        "probability_delta": 0.037940539805648044
+      },
+      {
+        "feature": "rpm",
+        "value": 1783.2076021187893,
+        "reference": 1670.1175130002687,
+        "probability_delta": 0.025788721962891392
+      },
+      {
+        "feature": "vibration_std_6",
+        "value": 0.6223089392104987,
+        "reference": 0.44578534234189104,
+        "probability_delta": -0.00823814870723194
+      },
+      {
+        "feature": "load",
+        "value": 0.9709938747291949,
+        "reference": 0.7716233124453382,
+        "probability_delta": -0.0008168747652844699
+      }
+    ],
+    "observed_reject_rate": 0.11666666666666667,
+    "reject_rate_source": "production record"
+  },
+  "vision": {
+    "defect_probability": 0.9986259937286377,
+    "label": "defect",
+    "confidence": 0.9986259937286377,
+    "severity": "review required",
+    "model": "synthetic-bearing-cnn",
+    "explanation_method": "Grad-CAM for predicted class",
+    "domain": "synthetic bearing surfaces only"
+  },
+  "note_analysis": {
+    "method": "rule_based_baseline",
+    "symptoms": [
+      "vibration",
+      "noise"
+    ],
+    "negated_symptoms": [],
+    "urgency": "medium",
+    "text": "Rising vibration and bearing noise. Inspect surface scratches.",
+    "limitations": "Keyword and local-negation rules; supervisor must verify context."
+  },
+  "evidence": [
+    {
+      "source": "bearing_sop.txt",
+      "text": "SYNTHETIC TRAINING MANUAL \u2014 not an industrial procedure.\nSection 1: Vibration and bearing wear\nPersistent vibration accompanied by rising temperature may indicate bearing wear. Ask the supervisor to inspect the bearing and lubrication history. Compare multiple sensor samples before recommending maintenance. Only qualified personnel may perform maintenance.",
+      "score": 0.37374
+    },
+    {
+      "source": "bearing_sop.txt",
+      "text": "Section 2: Surface quality\nScratches and pits on bearing surfaces require supervisor review and segregation of the affected lot for inspection. Investigate whether quality loss coincides with vibration changes. The image classifier is trained on synthetic surfaces only.",
+      "score": 0.33888
+    },
+    {
+      "source": "bearing_sop.txt",
+      "text": "Section 4: Reduced load\nA temporary reduction in machine load may lower stress while an inspection is arranged. The digital twin assumes 70 percent throughput and a hypothetical risk multiplier of 0.55; these assumptions require real-world validation.",
+      "score": 0.07878
+    }
+  ],
+  "scenarios": [
+    {
+      "action": "continue",
+      "expected_units": 451.3,
+      "downtime_hours": 3.74,
+      "failure_probability": 0.9357,
+      "expected_cost": 4280.62,
+      "currency": "illustrative currency units",
+      "assumptions": {
+        "illustrative_only": true,
+        "hours": 8.0,
+        "rate": 120.0,
+        "unit_margin": 4,
+        "failure_repair_cost": 2400,
+        "failure_lost_hours": 4,
+        "model_horizon_hours": 6,
+        "input_failure_probability": 0.872307987615025,
+        "horizon_failure_probability": 0.9356989139157846,
+        "horizon_conversion": "1-(1-p)**(hours/6), hypothetical constant hazard",
+        "speed_multiplier": 1,
+        "risk_multiplier": 1,
+        "planned_downtime": 0,
+        "planned_cost": 0,
+        "observed_reject_rate": 0.11666666666666667,
+        "image_score_used_for_yield": false,
+        "reject_rate_source": "production record"
+      }
+    },
+    {
+      "action": "reduce_load",
+      "expected_units": 440.9,
+      "downtime_hours": 2.06,
+      "failure_probability": 0.5146,
+      "expected_cost": 3311.7,
+      "currency": "illustrative currency units",
+      "assumptions": {
+        "illustrative_only": true,
+        "hours": 8.0,
+        "rate": 120.0,
+        "unit_margin": 4,
+        "failure_repair_cost": 2400,
+        "failure_lost_hours": 4,
+        "model_horizon_hours": 6,
+        "input_failure_probability": 0.872307987615025,
+        "horizon_failure_probability": 0.9356989139157846,
+        "horizon_conversion": "1-(1-p)**(hours/6), hypothetical constant hazard",
+        "speed_multiplier": 0.7,
+        "risk_multiplier": 0.55,
+        "planned_downtime": 0,
+        "planned_cost": 0,
+        "observed_reject_rate": 0.11666666666666667,
+        "image_score_used_for_yield": false,
+        "reject_rate_source": "production record"
+      }
+    },
+    {
+      "action": "maintenance",
+      "expected_units": 576.5,
+      "downtime_hours": 2.56,
+      "failure_probability": 0.1404,
+      "expected_cost": 2320.89,
+      "currency": "illustrative currency units",
+      "assumptions": {
+        "illustrative_only": true,
+        "hours": 8.0,
+        "rate": 120.0,
+        "unit_margin": 4,
+        "failure_repair_cost": 2400,
+        "failure_lost_hours": 4,
+        "model_horizon_hours": 6,
+        "input_failure_probability": 0.872307987615025,
+        "horizon_failure_probability": 0.9356989139157846,
+        "horizon_conversion": "1-(1-p)**(hours/6), hypothetical constant hazard",
+        "speed_multiplier": 1,
+        "risk_multiplier": 0.15,
+        "planned_downtime": 2,
+        "planned_cost": 450,
+        "observed_reject_rate": 0.11666666666666667,
+        "image_score_used_for_yield": false,
+        "reject_rate_source": "production record"
+      }
+    }
+  ],
+  "recommendation": {
+    "action": "maintenance",
+    "expected_cost": 2320.89,
+    "reason": "Lowest expected cost among three illustrative scenarios; human approval required. Image classifier flagged this item: supervisor quality review is required before release.",
+    "quality_review_required": true,
+    "quality_evidence": {
+      "individual_image_defect_probability": 0.9986259937286377,
+      "observed_reject_rate": 0.11666666666666667,
+      "image_score_is_batch_reject_rate": false
+    },
+    "sources": [
+      "bearing_sop.txt"
+    ],
+    "evidence_available": true
+  },
+  "messages": [
+    {
+      "agent": "maintenance",
+      "to": "planner",
+      "payload": {
+        "prediction": {
+          "machine_id": "M-01",
+          "observation_timestamp": "2026-01-26 10:00:00+00:00",
+          "probability": 0.872307987615025,
+          "model": "random_forest",
+          "model_version": "1",
+          "horizon": "next 6 hours",
+          "explanation_method": "One-feature replacement with training median (local sensitivity; not causal)",
+          "features": [
+            {
+              "feature": "temperature_mean_6",
+              "value": 82.09719693041559,
+              "reference": 70.37056473329534,
+              "probability_delta": 0.33993592660688665
+            },
+            {
+              "feature": "vibration_mean_6",
+              "value": 4.8767793093697955,
+              "reference": 3.3505524014327848,
+              "probability_delta": 0.29021746589348896
+            },
+            {
+              "feature": "temperature",
+              "value": 85.39010207051119,
+              "reference": 70.50473277051994,
+              "probability_delta": 0.1961197352095314
+            },
+            {
+              "feature": "vibration",
+              "value": 5.928663181106897,
+              "reference": 3.3599528141544908,
+              "probability_delta": 0.16711965904434745
+            },
+            {
+              "feature": "pressure",
+              "value": 5.537173555186361,
+              "reference": 5.9392707487470435,
+              "probability_delta": 0.07199762775022467
+            },
+            {
+              "feature": "reject_rate",
+              "value": 0.11666666666666667,
+              "reference": 0.058333333333333334,
+              "probability_delta": 0.037940539805648044
+            },
+            {
+              "feature": "rpm",
+              "value": 1783.2076021187893,
+              "reference": 1670.1175130002687,
+              "probability_delta": 0.025788721962891392
+            },
+            {
+              "feature": "vibration_std_6",
+              "value": 0.6223089392104987,
+              "reference": 0.44578534234189104,
+              "probability_delta": -0.00823814870723194
+            },
+            {
+              "feature": "load",
+              "value": 0.9709938747291949,
+              "reference": 0.7716233124453382,
+              "probability_delta": -0.0008168747652844699
+            }
+          ],
+          "observed_reject_rate": 0.11666666666666667,
+          "reject_rate_source": "production record"
+        },
+        "note_analysis": {
+          "method": "rule_based_baseline",
+          "symptoms": [
+            "vibration",
+            "noise"
+          ],
+          "negated_symptoms": [],
+          "urgency": "medium",
+          "text": "Rising vibration and bearing noise. Inspect surface scratches.",
+          "limitations": "Keyword and local-negation rules; supervisor must verify context."
+        }
+      }
+    },
+    {
+      "agent": "vision",
+      "to": "planner",
+      "payload": {
+        "defect_probability": 0.9986259937286377,
+        "label": "defect",
+        "confidence": 0.9986259937286377,
+        "severity": "review required",
+        "model": "synthetic-bearing-cnn",
+        "explanation_method": "Grad-CAM for predicted class",
+        "domain": "synthetic bearing surfaces only"
+      }
+    },
+    {
+      "agent": "knowledge",
+      "to": "planner",
+      "payload": {
+        "query": "bearing maintenance inspection vibration noise temperature mean 6 vibration mean 6 temperature surface defect quality inspection",
+        "evidence": [
+          {
+            "source": "bearing_sop.txt",
+            "text": "SYNTHETIC TRAINING MANUAL \u2014 not an industrial procedure.\nSection 1: Vibration and bearing wear\nPersistent vibration accompanied by rising temperature may indicate bearing wear. Ask the supervisor to inspect the bearing and lubrication history. Compare multiple sensor samples before recommending maintenance. Only qualified personnel may perform maintenance.",
+            "score": 0.37374
+          },
+          {
+            "source": "bearing_sop.txt",
+            "text": "Section 2: Surface quality\nScratches and pits on bearing surfaces require supervisor review and segregation of the affected lot for inspection. Investigate whether quality loss coincides with vibration changes. The image classifier is trained on synthetic surfaces only.",
+            "score": 0.33888
+          },
+          {
+            "source": "bearing_sop.txt",
+            "text": "Section 4: Reduced load\nA temporary reduction in machine load may lower stress while an inspection is arranged. The digital twin assumes 70 percent throughput and a hypothetical risk multiplier of 0.55; these assumptions require real-world validation.",
+            "score": 0.07878
+          }
+        ],
+        "abstained": false
+      }
+    },
+    {
+      "agent": "planner",
+      "to": "supervisor",
+      "payload": {
+        "scenarios": [
+          {
+            "action": "continue",
+            "expected_units": 451.3,
+            "downtime_hours": 3.74,
+            "failure_probability": 0.9357,
+            "expected_cost": 4280.62,
+            "currency": "illustrative currency units",
+            "assumptions": {
+              "illustrative_only": true,
+              "hours": 8.0,
+              "rate": 120.0,
+              "unit_margin": 4,
+              "failure_repair_cost": 2400,
+              "failure_lost_hours": 4,
+              "model_horizon_hours": 6,
+              "input_failure_probability": 0.872307987615025,
+              "horizon_failure_probability": 0.9356989139157846,
+              "horizon_conversion": "1-(1-p)**(hours/6), hypothetical constant hazard",
+              "speed_multiplier": 1,
+              "risk_multiplier": 1,
+              "planned_downtime": 0,
+              "planned_cost": 0,
+              "observed_reject_rate": 0.11666666666666667,
+              "image_score_used_for_yield": false,
+              "reject_rate_source": "production record"
+            }
+          },
+          {
+            "action": "reduce_load",
+            "expected_units": 440.9,
+            "downtime_hours": 2.06,
+            "failure_probability": 0.5146,
+            "expected_cost": 3311.7,
+            "currency": "illustrative currency units",
+            "assumptions": {
+              "illustrative_only": true,
+              "hours": 8.0,
+              "rate": 120.0,
+              "unit_margin": 4,
+              "failure_repair_cost": 2400,
+              "failure_lost_hours": 4,
+              "model_horizon_hours": 6,
+              "input_failure_probability": 0.872307987615025,
+              "horizon_failure_probability": 0.9356989139157846,
+              "horizon_conversion": "1-(1-p)**(hours/6), hypothetical constant hazard",
+              "speed_multiplier": 0.7,
+              "risk_multiplier": 0.55,
+              "planned_downtime": 0,
+              "planned_cost": 0,
+              "observed_reject_rate": 0.11666666666666667,
+              "image_score_used_for_yield": false,
+              "reject_rate_source": "production record"
+            }
+          },
+          {
+            "action": "maintenance",
+            "expected_units": 576.5,
+            "downtime_hours": 2.56,
+            "failure_probability": 0.1404,
+            "expected_cost": 2320.89,
+            "currency": "illustrative currency units",
+            "assumptions": {
+              "illustrative_only": true,
+              "hours": 8.0,
+              "rate": 120.0,
+              "unit_margin": 4,
+              "failure_repair_cost": 2400,
+              "failure_lost_hours": 4,
+              "model_horizon_hours": 6,
+              "input_failure_probability": 0.872307987615025,
+              "horizon_failure_probability": 0.9356989139157846,
+              "horizon_conversion": "1-(1-p)**(hours/6), hypothetical constant hazard",
+              "speed_multiplier": 1,
+              "risk_multiplier": 0.15,
+              "planned_downtime": 2,
+              "planned_cost": 450,
+              "observed_reject_rate": 0.11666666666666667,
+              "image_score_used_for_yield": false,
+              "reject_rate_source": "production record"
+            }
+          }
+        ],
+        "recommendation": {
+          "action": "maintenance",
+          "expected_cost": 2320.89,
+          "reason": "Lowest expected cost among three illustrative scenarios; human approval required. Image classifier flagged this item: supervisor quality review is required before release.",
+          "quality_review_required": true,
+          "quality_evidence": {
+            "individual_image_defect_probability": 0.9986259937286377,
+            "observed_reject_rate": 0.11666666666666667,
+            "image_score_is_batch_reject_rate": false
+          },
+          "sources": [
+            "bearing_sop.txt"
+          ],
+          "evidence_available": true
+        }
+      }
+    }
+  ],
+  "agent_mode": "deterministic structured orchestration",
+  "explanation": {
+    "mode": "local_llm",
+    "available": true,
+    "text": "The recommended action is to maintain the bearing based on the provided evidence. The evidence suggests that:\n\n1. Persistent vibration accompanied by rising temperature may indicate bearing wear.\n2. The supervisor should inspect the bearing and lubrication history.\n3. Comparison of multiple sensor samples before recommending maintenance.\n\nThese findings suggest that the bearing's condition needs immediate attention due to potential bearing wear and reduced load conditions. Therefore, the supervisor should recommend maintenance immediately.",
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "limitations": "Small local model; verify all generated claims against retrieved evidence. Not validated on factory data.",
+    "provenance": "Previously generated for the same synthetic M-01 observation 610 and defective image; see local-genai-evidence.json"
+  }
+}

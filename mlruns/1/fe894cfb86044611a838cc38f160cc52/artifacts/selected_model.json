@@ -1,0 +1,10 @@
+{
+  "name": "random_forest",
+  "version": 1,
+  "registry": "FactoryMaintenance",
+  "selection": "validation F1",
+  "run_id": "69409da6c04e46068c8fa171adc96ca5",
+  "model_uri": "models:/m-7bf03b340f62491493242909e6034974",
+  "training_domain": "synthetic",
+  "threshold": 0.5
+}

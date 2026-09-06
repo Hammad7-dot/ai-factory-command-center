@@ -1,0 +1,26 @@
+artifact_path: file:C:/Users/dell/OneDrive/Documents/ChatGPT/AI Factory Command Center/mlruns/1/models/m-7bf03b340f62491493242909e6034974/artifacts
+flavors:
+  python_function:
+    artifacts:
+      ann:
+        path: artifacts/ann.pt
+        uri: C:\Users\dell\OneDrive\Documents\ChatGPT\AI Factory Command Center\artifacts\ann.pt
+      bundle:
+        path: artifacts/maintenance.joblib
+        uri: C:\Users\dell\OneDrive\Documents\ChatGPT\AI Factory Command Center\artifacts\maintenance.joblib
+    cloudpickle_version: 3.0.0
+    code: null
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pyfunc.model
+    python_model: python_model.pkl
+    python_version: 3.13.5
+    streamable: false
+mlflow_version: 3.16.0
+model_id: m-7bf03b340f62491493242909e6034974
+model_size_bytes: 1138996
+model_uuid: m-7bf03b340f62491493242909e6034974
+prompts: null
+run_id: 69409da6c04e46068c8fa171adc96ca5
+utc_time_created: '2026-09-05 16:22:02.088087'
