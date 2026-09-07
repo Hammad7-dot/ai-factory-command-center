@@ -2,22 +2,18 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent/'.deps'))
 import json
-import sqlite3
 import pandas as pd
-import numpy as np
 import plotly.express as px
 import streamlit as st
 from PIL import Image
-from pypdf import PdfReader
 from factory.data import ROOT, FEATURES, prepare
 from factory.models import maintenance_predict, vision_predict
 from factory.workflow import run_agents, save_decision, retrieve
 import factory.llm as llm_client
-from importlib import reload
-# Refresh this stateless client on rerun without clearing the user's private key/session.
-generate_explanation=reload(llm_client).generate_explanation
+generate_explanation=llm_client.generate_explanation
 from factory.reporting import incident_pdf
 from factory.learning import save_outcome, load_outcomes, train_candidate
+from factory.uploads import extract_documents, load_image
 
 st.set_page_config(page_title='AI Factory | Command Center',page_icon='◈',layout='wide')
 st.markdown('''<style>
@@ -42,8 +38,10 @@ with st.sidebar:
     docs=st.file_uploader('Additional manual / SOP',type=['pdf','txt'],accept_multiple_files=True)
     st.divider(); st.caption('OpenAI receives evidence only when you request generation or comparison with OpenAI selected. Local Qwen keeps inference on this computer.')
     provider=st.selectbox('Explanation provider',['OpenAI API','Local Qwen (no API credits)'],index=1 if (ROOT/'local_models/qwen-0.5b/model.safetensors').exists() else 0)
-    api_key=st.text_input('OpenAI API key',type='password')
-    llm_model=st.text_input('LLM model','gpt-4o-mini')
+    api_key=''; llm_model='gpt-4o-mini'
+    if provider=='OpenAI API':
+        api_key=st.text_input('OpenAI API key',type='password')
+        llm_model=st.text_input('LLM model',llm_model)
 
 def explain_with_selected_provider(snapshot):
     if provider.startswith('Local'):
@@ -66,26 +64,20 @@ with c2:
     position=st.slider('Observation in machine history',0,len(history)-1,min(610,len(history)-1)) if len(history)>1 else 0
 row=history.iloc[position]
 st.caption(f'Observation: {row.timestamp} · Rolling features use current and earlier readings only')
-extra=[]
-for file in docs or []:
-    try:
-        if file.name.lower().endswith('.pdf'):
-            reader=PdfReader(file)
-            extra.extend(dict(source=f'{file.name} / page {i+1}',text=p.extract_text() or '') for i,p in enumerate(reader.pages))
-        else: extra.append(dict(source=file.name,text=file.getvalue().decode('utf-8')))
-    except Exception as exc: st.warning(f'Unable to extract {file.name}: {exc}')
+extra,extraction_warnings=extract_documents(docs)
+for warning in extraction_warnings: st.warning(warning)
 try:
-    img=Image.open(image_upload).convert('RGB') if image_upload else Image.open(ROOT/('data/images/test/defect/0001.png' if sample=='Defective bearing' else 'data/images/test/normal/0000.png')).convert('RGB')
+    img=load_image(image_upload if image_upload else ROOT/('data/images/test/defect/0001.png' if sample=='Defective bearing' else 'data/images/test/normal/0000.png'))
 except Exception as exc: st.error('Invalid image: '+str(exc)); st.stop()
 
-if st.button('Analyze incident',type='primary',use_container_width=True):
+if st.button('Analyze incident',type='primary',width='stretch'):
     with st.spinner('Running models, retrieving evidence and comparing scenarios...'):
         maintenance=maintenance_predict(row)
         maintenance['observed_reject_rate']=float(row.reject_rate) if pd.notna(row.reject_rate) else .05
         maintenance['reject_rate_source']='production record' if pd.notna(row.reject_rate) else 'assumed 5% (production data unavailable)'
         vision,cam=vision_predict(img)
         incident=run_agents(maintenance,vision,note,extra)
-        incident['explanation']=generate_explanation(incident,api_key='') if not __import__('os').environ.get('OPENAI_API_KEY') else {'mode':'not_requested','available':False,'text':'Click Generate LLM explanation to send evidence to the configured provider.'}
+        incident['explanation']={'mode':'not_requested','available':False,'text':'Click Generate LLM explanation to use the configured provider.','reason':'Generation has not been requested.'}
         st.session_state.incident=incident; st.session_state.cam=cam; st.session_state.incident_image=img.copy(); st.session_state.decision=None
         st.session_state.pop('rag_comparison',None)
 
@@ -94,10 +86,10 @@ with tabs[0]:
     cols=st.columns(4)
     for col,label,value in zip(cols,['Temperature','Vibration','Pressure','Load'],[f'{row.temperature:.1f} °C',f'{row.vibration:.2f} mm/s',f'{row.pressure:.2f} bar',f'{row.load:.0%}']): col.metric(label,value)
     shown=history.iloc[max(0,position-71):position+1]
-    st.plotly_chart(px.line(shown,x='timestamp',y=['vibration','pressure'],title='Last 72 observations · vibration (mm/s) and pressure (bar)',template='plotly_dark'),use_container_width=True)
+    st.plotly_chart(px.line(shown,x='timestamp',y=['vibration','pressure'],title='Last 72 observations · vibration (mm/s) and pressure (bar)',template='plotly_dark'),width='stretch')
     a,b=st.columns([2,1])
     with a:
-        st.plotly_chart(px.line(shown,x='timestamp',y='temperature',title='Temperature trend (°C)',template='plotly_dark'),use_container_width=True)
+        st.plotly_chart(px.line(shown,x='timestamp',y='temperature',title='Temperature trend (°C)',template='plotly_dark'),width='stretch')
     with b: st.image(img,caption='Selected product image',width=230)
     st.info('Select an observation and click Analyze incident to create a prediction and supervisor review.')
 
@@ -108,8 +100,8 @@ with tabs[1]:
         a,b,c=st.columns(3); a.metric('Failure probability / 6h',f"{incident['maintenance']['probability']:.1%}"); b.metric('Image defect probability',f"{incident['vision']['defect_probability']:.1%}"); c.metric('Suggested action',incident['recommendation']['action'].replace('_',' ').title())
         st.caption('Model probabilities are not calibrated confidence intervals. Synthetic training domain.')
         scenarios=pd.DataFrame(incident['scenarios'])
-        st.plotly_chart(px.bar(scenarios,x='action',y='expected_cost',color='action',title='Eight-hour digital twin · illustrative expected cost',template='plotly_dark'),use_container_width=True)
-        st.dataframe(scenarios[['action','expected_units','downtime_hours','failure_probability','expected_cost']],hide_index=True,use_container_width=True)
+        st.plotly_chart(px.bar(scenarios,x='action',y='expected_cost',color='action',title='Eight-hour digital twin · illustrative expected cost',template='plotly_dark'),width='stretch')
+        st.dataframe(scenarios[['action','expected_units','downtime_hours','failure_probability','expected_cost']],hide_index=True,width='stretch')
         with st.expander('Simulation assumptions'): st.json(incident['scenarios'])
         st.write(incident['recommendation']['reason'])
         st.subheader('Supervisor decision')
@@ -131,7 +123,7 @@ with tabs[2]:
         a,b=st.columns(2)
         with a:
             st.subheader('Sensor explanation')
-            f=pd.DataFrame(incident['maintenance']['features']); st.plotly_chart(px.bar(f,x='probability_delta',y='feature',orientation='h',title='Change from replacing one feature with its training median',template='plotly_dark'),use_container_width=True)
+            f=pd.DataFrame(incident['maintenance']['features']); st.plotly_chart(px.bar(f,x='probability_delta',y='feature',orientation='h',title='Change from replacing one feature with its training median',template='plotly_dark'),width='stretch')
             st.caption('Local sensitivity; correlated features and noncausal associations limit interpretation. Global permutation importance is in Models & data.')
         with b: st.image(st.session_state.cam,caption='Grad-CAM · influential regions for predicted image class',width=300)
         st.subheader('Retrieved manual evidence')
@@ -183,13 +175,13 @@ with tabs[2]:
     if st.button('Retrieve supporting sections'): st.json(retrieve(query,extra))
 with tabs[3]:
     st.subheader('Held-out evaluation')
-    st.dataframe(pd.read_csv(ROOT/'artifacts/metrics.csv'),hide_index=True,use_container_width=True)
+    st.dataframe(pd.read_csv(ROOT/'artifacts/metrics.csv'),hide_index=True,width='stretch')
     st.caption('Maintenance models use the same chronological splits; CNN metrics describe a separate image task. Selection uses validation F1 only. Fixed decision threshold 0.5.')
     st.json(json.loads((ROOT/'artifacts/selected_model.json').read_text()))
     st.subheader('Global permutation importance / Random Forest')
     st.dataframe(pd.read_csv(ROOT/'artifacts/feature_importance.csv'),hide_index=True)
     st.subheader('Cleaning audit'); st.json(audit)
-    st.subheader('EDA / numeric summary'); st.dataframe(data[FEATURES].describe(),use_container_width=True)
+    st.subheader('EDA / numeric summary'); st.dataframe(data[FEATURES].describe(),width='stretch')
     st.subheader('Maintenance error analysis'); st.dataframe(pd.read_csv(ROOT/'artifacts/maintenance_errors.csv').head(40),hide_index=True)
     st.caption('False negatives miss future synthetic failures; false positives trigger unnecessary review. Borderline wear trajectories and sensor noise are expected sources of overlap.')
     st.code('python tools/mlflow_ui.py',language='powershell')

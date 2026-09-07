@@ -3,13 +3,11 @@ from __future__ import annotations
 
 import json
 import math
-import os
 from pathlib import Path
 import re
 import sqlite3
 from contextlib import closing
 from datetime import datetime, timezone
-import urllib.request
 from uuid import uuid4
 
 ROOT = Path(__file__).resolve().parents[1]

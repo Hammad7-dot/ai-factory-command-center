@@ -4,3 +4,7 @@ primaryColor = "#c8f16b"
 backgroundColor = "#0c141c"
 secondaryBackgroundColor = "#14222e"
 textColor = "#eef4f6"
+
+[server]
+maxUploadSize = 25
+maxMessageSize = 50

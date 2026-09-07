@@ -1,4 +1,4 @@
-artifact_path: file:C:/Users/dell/OneDrive/Documents/ChatGPT/AI Factory Command Center/mlruns/2/models/m-73c680ae0a834fab9068fa9636e2fdd1/artifacts
+artifact_path: file:mlruns/2/models/m-73c680ae0a834fab9068fa9636e2fdd1/artifacts
 flavors:
   python_function:
     env:

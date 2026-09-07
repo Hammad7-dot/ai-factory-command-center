@@ -91,7 +91,7 @@ Sensor CSV requires these columns:
 
 Invalid timestamps and missing machine identifiers are removed. Duplicate machine/timestamp records keep the first occurrence. Invalid sensor ranges become missing values. Forward fill stays within each machine and uses only prior readings. Rolling features use six observations, which correspond to six hours only for the hourly demo data. Remaining gaps use training-fit median imputation. A missing production rate is imputed for model inference; the twin uses an explicitly labelled 5% assumption when production quality is unavailable. Uploaded data does not trigger retraining.
 
-PNG/JPEG uploads are accepted by the UI but the CNN was trained only on generated 64Ã—64 bearing drawings. Real camera photographs are outside its validated domain. PDF extraction handles embedded text, not scanned-page OCR.
+PNG/JPEG uploads are accepted by the UI but the CNN was trained only on generated 64×64 bearing drawings. Real camera photographs are outside its validated domain. PDF extraction handles embedded text, not scanned-page OCR. Uploads are capped at 25 MB; document extraction reads at most 50 PDF pages and 200,000 characters per analysis.
 
 ## Models and evaluation
 
@@ -133,7 +133,7 @@ outputs/presentation.html is a 12-slide browser presentation with arrow-key navi
 
 The selected Random Forest test F1 is 0.8585; ANN test F1 is 0.8517 and CNN test F1 is 0.9873. These describe held-out synthetic samples.
 
-When the folder is moved, tools/mlflow_ui.py updates stored local MLflow artifact locations using tools/relocate_mlflow.py. Keep mlruns/ alongside artifacts/. The application loads only its bundled local models.
+When the folder is moved, tools/mlflow_ui.py updates stored local MLflow artifact locations using tools/relocate_mlflow.py. Keep mlruns/ alongside artifacts/. Before committing newly generated MLflow runs, `python tools/sanitize_mlflow.py` converts database locations to portable paths. The application loads only its bundled local models.
 
 ## Controlled continuous learning
 

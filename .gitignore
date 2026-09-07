@@ -7,5 +7,6 @@ __pycache__/
 work/
 artifacts/decisions.sqlite
 artifacts/decisions.sqlite-*
+artifacts/project-location.json
 outputs/*.zip
 tools/browser_check.cjs

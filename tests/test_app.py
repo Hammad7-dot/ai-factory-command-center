@@ -10,6 +10,7 @@ def test_dashboard_analysis_and_reject(tmp_path, monkeypatch):
     next(b for b in app.button if b.label=='Analyze incident').click().run()
     assert not app.exception
     assert app.session_state['incident']['status']=='pending'
+    assert app.session_state['incident']['explanation']['mode']=='not_requested'
     next(r for r in app.radio if r.label=='Decision').set_value('reject')
     next(b for b in app.button if b.label=='Record human decision').click().run()
     assert not app.exception
