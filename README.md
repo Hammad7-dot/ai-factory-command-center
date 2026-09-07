@@ -29,7 +29,11 @@ A clean virtual environment is preferable when reproducing the project elsewhere
 python tools/mlflow_ui.py
 ```
 
-Use the local URL printed by each command (Streamlit normally uses port 8501; MLflow uses port 5000). Check the workflow and data tests with `python -m pytest tests`. The local suite passed 17 tests, including Streamlit analysis and rejection. Browser verification and PDF checks were also performed. Hosted LLM generation remains blocked by the supplied API account credit balance. Local Qwen weights are installed on this computer and actual generation has been verified.
+Use the local URL printed by each command (Streamlit normally uses port 8501; MLflow uses port 5000). Check the workflow and data tests with `python -m pytest tests`. The local suite passed 19 tests, including Streamlit analysis, rejection, and upload safety limits. Browser verification and PDF checks were also performed. Hosted LLM generation remains blocked by the supplied API account credit balance. Local Qwen weights are installed on this computer and actual generation has been verified.
+
+## Deploy on Streamlit Community Cloud
+
+Create an app from `Hammad7-dot/ai-factory-command-center`, select branch `main`, and set the entrypoint to `app.py`. The root `requirements.txt` contains the cloud runtime dependencies. The deployed app works with the bundled deterministic pipeline and offline explanation fallback; Local Qwen weights are intentionally excluded from GitHub. For hosted explanations, add `OPENAI_API_KEY="your-key"` in Community Cloud's advanced settings under **Secrets**. Never add a real key to the repository.
 
 ## Demonstration flow
 
