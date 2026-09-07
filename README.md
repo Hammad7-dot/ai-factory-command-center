@@ -2,6 +2,8 @@
 
 A hackathon prototype for a bearing production line: combine sensor predictions, product images, production quality records, maintenance notes and manuals into a human-reviewed incident. All included factory data and manuals are synthetic. This is decision support, not a machine controller.
 
+[![Open the live Streamlit app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://ai-factory-command-center-hzlxd3ce38xrsjrcm3tvkx.streamlit.app/)
+
 ## Run locally
 
 From this project folder in PowerShell, with Python and internet access for package installation:
